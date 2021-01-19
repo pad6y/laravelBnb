@@ -1917,12 +1917,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     itemTitle: String,
-    itemContent: String,
+    itemDescription: String,
     price: Number
   }
 });
@@ -1939,7 +1937,6 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _BookableListItem__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./BookableListItem */ "./resources/js/bookables/BookableListItem.vue");
-//
 //
 //
 //
@@ -1997,39 +1994,19 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     var _this = this;
 
-    this.loading = true;
-    setTimeout(function () {
-      _this.bookables = [{
-        title: "Cheap Villa",
-        content: "A very cheap villa",
-        price: 400
-      }, {
-        title: "Cheap Villa 2",
-        content: "A very cheap villa 2",
-        price: 500
-      }, {
-        title: "Expensive Villa 1",
-        content: "A expensive villa",
-        price: 10000
-      }, {
-        title: "Average Villa 2",
-        content: "Average villa 2",
-        price: 1300
-      }, {
-        title: "Cheap Villa 3",
-        content: "A very cheap villa",
-        price: 580
-      }, {
-        title: "Average Villa",
-        content: "A very average villa 2",
-        price: 600
-      }, {
-        title: "Cheap Villa 9",
-        content: "A very cheap villa",
-        price: 580
-      }];
+    this.loading = true; // const p = new Promise((resolve, reject) => {
+    //    console.log(resolve);
+    //    console.log(reject);
+    //    setTimeout(()=> resolve("Hello"), 3000);
+    // })
+    // .then(result => console.log(`Success ${result}`))
+    // .catch(result => console.log(`Error ${result}`));
+    // console.log(p);
+
+    var request = axios.get("/api/bookables").then(function (response) {
+      _this.bookables = response.data;
       _this.loading = false;
-    }, 2000);
+    });
   }
 });
 
@@ -37711,13 +37688,13 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "card" }, [
+  return _c("div", { staticClass: "card w-100" }, [
     _c("div", { staticClass: "card-body" }, [
       _c("h5", { staticClass: "card-title" }, [_vm._v(_vm._s(_vm.itemTitle))]),
       _vm._v(" "),
-      _c("p", { staticClass: "card-text" }, [_vm._v(_vm._s(_vm.itemContent))]),
-      _vm._v(" "),
-      _c("p", { staticClass: "card-text" }, [_vm._v("£" + _vm._s(_vm.price))])
+      _c("p", { staticClass: "card-text" }, [
+        _vm._v(_vm._s(_vm.itemDescription))
+      ])
     ])
   ])
 }
@@ -37756,13 +37733,15 @@ var render = function() {
                 _vm._l(_vm.bookablesInRow(row), function(bookable, column) {
                   return _c(
                     "div",
-                    { key: "row" + row + column, staticClass: "col" },
+                    {
+                      key: "row" + row + column,
+                      staticClass: "col d-flex align-items-stretch"
+                    },
                     [
                       _c("BookableListItem", {
                         attrs: {
                           "item-title": bookable.title,
-                          "item-content": bookable.content,
-                          price: bookable.price
+                          "item-description": bookable.description
                         }
                       })
                     ],
