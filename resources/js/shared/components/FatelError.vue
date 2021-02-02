@@ -8,7 +8,7 @@
 
 <style scoped>
 .error {
-    color: #999;
+    color: #aa1818;
     font-size: 10rem;
 }
 </style>

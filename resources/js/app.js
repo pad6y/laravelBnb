@@ -7,6 +7,7 @@ import moment from "moment";
 
 import StarRating from "./shared/components/StarRating";
 import FatelError from "./shared/components/FatelError";
+import Success from "./shared/components/Success";
 import validationErrors from "./shared/components/validationErrors";
 
 window.Vue = require('vue');
@@ -19,6 +20,7 @@ Vue.filter("fromNow", value => moment(value).fromNow());
 
 Vue.component("star-rating", StarRating);
 Vue.component("fatel-error", FatelError);
+Vue.component("success", Success);
 Vue.component("v-errors", validationErrors);
 
 const app = new Vue({
