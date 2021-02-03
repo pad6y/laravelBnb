@@ -2,9 +2,13 @@
    <div class="">
       <h6 class="text-uppercase text-secondary font-weight-bolder">
          Check Availability
-         <span v-if="noAvailability" class="text-danger">(NOT AVAILABLE)</span>
-         <span v-if="hasAvailability" class="text-success">(AVAILABLE)</span>
-         </h6>
+         
+         <transition name="fade">
+            <span v-if="noAvailability" class="text-danger">(NOT AVAILABLE)</span>
+            <span v-if="hasAvailability" class="text-success">(AVAILABLE)</span>
+         </transition>
+
+      </h6>
       
       <div class="form-row">
          <div class="form-group col-md-6">
@@ -36,15 +40,21 @@
          </div>
       </div>
       
-      <button class="btn btn-secondary btn-block" @click="check" :disabled="loading">Check!</button>
+      <button class="btn btn-secondary btn-block" @click="check" :disabled="loading">
+         <rotating-cog :loading="this.loading"> Checking...</rotating-cog>
+         <!-- <span v-if="!loading">Check!</span>
+         <span v-if="loading"><i class="fas fa-cog fa-spin"></i> Checking...</span> -->
+      </button>
    </div>
 </template>
 
 <script>
    import {is422} from "./../shared/utils/response";
    import validationErrors from "./../shared/mixins/validationErrors"
+import RotatingCog from '../shared/components/RotatingCog.vue';
    
    export default {
+  components: { RotatingCog },
       mixins: [validationErrors],
       props: {
         bookableId: [String, Number] 

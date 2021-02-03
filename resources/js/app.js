@@ -9,6 +9,7 @@ import moment from "moment";
 import StarRating from "./shared/components/StarRating";
 import FatelError from "./shared/components/FatelError";
 import Success from "./shared/components/Success";
+import RotatingCog from "./shared/components/RotatingCog.vue";
 import validationErrors from "./shared/components/validationErrors";
 import storeDefinition from "./store";
 
@@ -25,6 +26,7 @@ Vue.component("star-rating", StarRating);
 Vue.component("fatel-error", FatelError);
 Vue.component("success", Success);
 Vue.component("v-errors", validationErrors);
+Vue.component("rotatingCog", RotatingCog);
 
 const store = new Vuex.Store(storeDefinition);
 
