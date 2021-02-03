@@ -68,27 +68,39 @@ import RotatingCog from '../shared/components/RotatingCog.vue';
          };
       },
       methods: {
-         check() {
-           this.loading = true; 
-           this.errors = null;
+         async check() {
+            this.loading = true; 
+            this.errors = null;
            
-           this.$store.dispatch('setLastSearch', { 
+            this.$store.dispatch('setLastSearch', { 
               from: this.from,
               to: this.to
-           });
+            });
            
-           axios
-           .get(`/api/bookables/${this.bookableId}/availability?from=${this.from}&to=${this.to}`)
-           .then(response => {
-              this.status = response.status
-           })
-           .catch(error => {
-              if(is422(error)) {
-                 this.errors = error.response.data.errors;
-              }
-              this.status = error.response.status;
-           })
-           .then(() => (this.loading = false));
+            try {
+               this.status = (await axios.get(`/api/bookables/${this.bookableId}/availability?from=${this.from}&to=${this.to}`)).status;
+               this.$emit("availability", this.hasAvailability);
+            } catch (err) {
+               if(is422(err)) {
+                  this.errors = err.response.data.errors;
+               }
+               this.status = err.response.status;
+               this.$emit("availability", this.hasAvailability);
+            }
+            
+            this.loading = false
+         //   axios
+         //   .get(`/api/bookables/${this.bookableId}/availability?from=${this.from}&to=${this.to}`)
+         //   .then(response => {
+         //      this.status = response.status
+         //   })
+         //   .catch(error => {
+         //      if(is422(error)) {
+         //         this.errors = error.response.data.errors;
+         //      }
+         //      this.status = error.response.status;
+         //   })
+         //   .then(() => (this.loading = false));
          }
       },
       computed: {
