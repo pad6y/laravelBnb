@@ -41,7 +41,7 @@
       </div>
       
       <button class="btn btn-secondary btn-block" @click="check" :disabled="loading">
-         <rotating-cog :loading="this.loading"> Checking...</rotating-cog>
+         <RotatingCog :loading="this.loading"> Checking...</RotatingCog>
          <!-- <span v-if="!loading">Check!</span>
          <span v-if="loading"><i class="fas fa-cog fa-spin"></i> Checking...</span> -->
       </button>
