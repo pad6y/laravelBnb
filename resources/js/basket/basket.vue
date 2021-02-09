@@ -5,41 +5,41 @@
             <div class="row">
                <div class="col-md-6 form-group">
                   <label for="first_names">First names</label>
-                  <input type="text" class="form-control" name="first_names">
+                  <input type="text" class="form-control" name="first_names" v-model="customer.first_names">
                </div>
                <div class="col-md-6 form-group">
                   <label for="last_name">Last name</label>
-                  <input type="text" class="form-control" name="last_name">
+                  <input type="text" class="form-control" name="last_name" v-model="customer.last_name">
                </div>
             </div>
             <div class="row">
                <div class="col-md-12 form-group">
                   <label for="email">Email</label>
-                  <input type="email" class="form-control" name="email">
+                  <input type="email" class="form-control" name="email" v-model="customer.email">
                </div>
             </div>
             <div class="row">
                <div class="col-md-6 form-group">
                   <label for="street">Street</label>
-                  <input type="text" class="form-control" name="street">
+                  <input type="text" class="form-control" name="street" v-model="customer.street">
                </div>
                <div class="col-md-6 form-group">
                   <label for="city">City</label>
-                  <input type="text" class="form-control" name="city">
+                  <input type="text" class="form-control" name="city" v-model="customer.city">
                </div>
             </div>
             <div class="row">
                <div class="col-md-4 form-group">
                   <label for="region">Region</label>
-                  <input type="text" class="form-control" name="region">
+                  <input type="text" class="form-control" name="region" v-model="customer.region">
                </div>
                <div class="col-md-2 form-group">
                   <label for="postcode">Postcode</label>
-                  <input type="text" class="form-control" name="postcode">
+                  <input type="text" class="form-control" name="postcode" v-model="customer.postcode">
                </div>
                <div class="col-md-6 form-group">
                   <label for="country">Country</label>
-                  <input type="text" class="form-control" name="country">
+                  <input type="text" class="form-control" name="country" v-model="customer.country">
                </div>
             </div>
             <hr/>
@@ -100,6 +100,20 @@
    import {mapGetters, mapState} from "vuex";
    
    export default {
+      data() {
+         return {
+            customer: {
+               first_names: null,
+               last_name: null,
+               email: null,
+               street: null,
+               city: null,
+               region: null,
+               postcode: null,
+               country: null
+            }
+         }
+      },
       computed: {
          ...mapGetters(["itemsInBasket"]),
          ...mapState({
