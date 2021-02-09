@@ -1,7 +1,7 @@
 <template>
    <div>
       <div class="row">
-         <div class="col-md-8">
+         <div class="col-md-8" v-if="itemsInBasket">
             <div class="row">
                <div class="col-md-6 form-group">
                   <label for="first_names">First names</label>
@@ -45,8 +45,17 @@
             <hr/>
             <div class="row">
                <div class="col-md-12 form-group">
-                  <button type="submit" class="btn btn-lg btn-primary btn-block">Book now!</button>
+                  <button 
+                     type="submit" 
+                     class="btn btn-lg btn-primary btn-block" 
+                     @click.prevent="book"
+                     >Book now!</button>
                </div>
+            </div>
+         </div>
+         <div class="col-md-8" v-else>
+            <div class="jumbotron jumbotron-fluid text-center">
+               Cart is empty
             </div>
          </div>
          
@@ -98,10 +107,13 @@
 
 <script>
    import {mapGetters, mapState} from "vuex";
+   import validationErrors from "./../shared/mixins/validationErrors"
    
    export default {
+      mixins: [validationErrors],
       data() {
          return {
+            loading: false,
             customer: {
                first_names: null,
                last_name: null,
@@ -112,15 +124,34 @@
                postcode: null,
                country: null
             }
-         }
+         };
       },
       computed: {
          ...mapGetters(["itemsInBasket"]),
          ...mapState({
             basket: state => state.basket.items
          })
+      },
+      methods: {
+         async book() {
+            this.loading = true;
+            
+            try {
+               await axios.post(`/api/checkout`, {
+                  customer: this.customer,
+                  bookings: this.basket.map(basketItem => ({
+                     bookable_id: basketItem.bookable.id,
+                     from: basketItem.dates.from,
+                     to: basketItem.dates.to
+                  }))
+               });
+               this.$store.dispatch("clearBasket");
+            } catch (err) {}
+            
+            this.loading = false;
+         }
       }
-   }
+   };
 
 </script>
 
