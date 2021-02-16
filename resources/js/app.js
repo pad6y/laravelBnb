@@ -30,6 +30,19 @@ Vue.component("rotatingCog", RotatingCog);
 
 const store = new Vuex.Store(storeDefinition);
 
+window.axios.interceptors.response.use(
+  response => {
+    return response;
+  },
+  error => {
+    if (401 === error.response.status) {
+      store.dispatch("logout");
+    }
+    
+    return Promise.reject(error);
+  }
+);
+
 const app = new Vue({
     el: '#app',
     router,
@@ -39,14 +52,7 @@ const app = new Vue({
     },
     async beforeCreate() {
       this.$store.dispatch("loadStoredState");  
-      
-      // await axios.get('/sanctum/csrf-cookie');
-      // await axios.post('/login', {
-      //   email: 'sgreenholt@example.org',
-      //   password: 'password'
-      // });
-      
-      await axios.get('/user');
+      this.$store.dispatch("loadUser");
     },
     
 });

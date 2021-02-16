@@ -7,6 +7,16 @@ import Basket from "./basket/basket";
 
 const routes = [
    { 
+      path: "/auth/login", 
+      component: require("./auth/login").default,
+      name: "login",
+   },
+   { 
+      path: "/auth/register", 
+      component: require("./auth/register").default,
+      name: "register",
+   },
+   { 
       path: "/", 
       component: Bookables,
       name: "home",

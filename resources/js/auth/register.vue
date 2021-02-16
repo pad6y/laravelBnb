@@ -3,13 +3,26 @@
       <div class="card card-body">
          <form>
             <div class="form-group">
+               <label for="name">Name</label>
+               <input 
+                  type="text" 
+                  placeholder="Enter your full name" 
+                  name="name" 
+                  class="form-control" 
+                  v-model="user.name"
+                  :class="[{'is-invalid': errorFor('name')}]"
+               >
+               <v-errors :errors="errorFor('name')"></v-errors>
+            </div>
+            
+            <div class="form-group">
                <label for="email">E-mail</label>
                <input 
                   type="text" 
                   name="email" 
                   placeholder="Enter your email" 
                   class="form-control" 
-                  v-model="email"
+                  v-model="user.email"
                   :class="[{'is-invalid': errorFor('email')}]"
                >
                <v-errors :errors="errorFor('email')"></v-errors>
@@ -22,29 +35,34 @@
                   name="password" 
                   placeholder="Enter your password" 
                   class="form-control" 
-                  v-model="password"
+                  v-model="user.password"
                   :class="[{'is-invalid': errorFor('password')}]"
                >
                <v-errors :errors="errorFor('password')"></v-errors>
+            </div>
+            
+            <div class="form-group">
+               <label for="password_confirmation">Confirm Password</label>
+               <input 
+                  type="password" 
+                  name="password_confirmation" 
+                  placeholder="Confirm your password" 
+                  class="form-control" 
+                  v-model="user.password_confirmation"
+                  :class="[{'is-invalid': errorFor('password_confirmation')}]"
+               >
+               <v-errors :errors="errorFor('password_confirmation')"></v-errors>
             </div>
             
             <button 
                type="submit" 
                class="btn btn-primary btn-lg btn-block" 
                :disabled="loading" 
-               @click.prevent="login"
-            >Login</button>
+               @click.prevent="register"
+            >Sign up</button>
             
-            <hr/>
-            
-            <div>
-               <router-link :to="{name: 'register'}" class="font-weight-bold">Register Account Here!</router-link>
-            </div>
-            
-            <div>
 
-               <router-link :to="{name: 'home'}" class="font-weight-bold">Reset Password</router-link>
-            </div>
+
          </form>
       </div>
    </div>
@@ -60,27 +78,30 @@
       mixins: [validationErrors],
       data() {
          return {
-            email: null,
-            password: null,
+            user: {
+               name: null,
+               email: null,
+               password: null,
+               password_confirmation: null
+            },
+            
             loading: false
             
          };
       },
       methods: {
-         async login() {
+         async register() {
             this.loading = true;
             this.errors = null;
             
             try{
-               await axios.get('/sanctum/csrf-cookie');
-               await axios.post('/login', {
-                  email: this.email,
-                  password: this.password
-               });
+               const response = await axios.post('/register', this.user);
                
-               logIn();
-               this.$store.dispatch("loadUser");
-               this.$router.push({name: "home"});
+               if(201 == response.status) {
+                  logIn();
+                  this.$store.dispatch("loadUser");
+                  this.$router.push({name: "home"});
+               }
                               
             }catch (error) {
                this.errors = error.response && error.response.data.errors;
